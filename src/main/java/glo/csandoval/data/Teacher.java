@@ -1,7 +1,5 @@
 package glo.csandoval.data;
 
-import java.util.UUID;
-
 public class Teacher {
     private String name;
     private double baseSalary;

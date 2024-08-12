@@ -1,6 +1,5 @@
 package glo.csandoval.data;
 
-import java.sql.Struct;
 import java.util.*;
 
 public class Class {

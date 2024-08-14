@@ -56,8 +56,8 @@ public class University {
         }
     }
 
-    public static List<Teacher> getAllStudents() {
-        return new ArrayList<>(University.teachers);
+    public static List<Student> getAllStudents() {
+        return new ArrayList<>(University.students);
     }
 
     public static void addStudent(Student newStudent) throws NullPointerException {

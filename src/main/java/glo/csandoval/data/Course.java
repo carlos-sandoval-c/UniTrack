@@ -2,7 +2,7 @@ package glo.csandoval.data;
 
 import java.util.*;
 
-public class Class {
+public class Course {
     private String name;
     private String classroom;
     private final List<Student> students;
@@ -12,7 +12,7 @@ public class Class {
     // It does not apply to teachers because their growth is not equal to the number of students.
     private final Set<UUID> enrolledStudentsUUID = new HashSet<>();
 
-    public Class(String name, String classroom) throws IllegalArgumentException {
+    public Course(String name, String classroom) throws IllegalArgumentException {
         if (name == null || classroom == null || name.isEmpty() || classroom.isEmpty())
             throw  new IllegalArgumentException("Class_Constructor: Invalid information for university class creation process");
         this.name = name;
@@ -41,6 +41,10 @@ public class Class {
         this.classroom = newClassroom;
     }
 
+    public List<Student> getStudents() {
+        return new ArrayList<>(this.students);
+    }
+
     public void addStudent(Student newStudent) throws IllegalArgumentException {
         if (newStudent == null)
             throw new IllegalArgumentException("Class_StudentList: An attempt was made to add an invalid item to the list of students.");
@@ -61,6 +65,10 @@ public class Class {
         this.enrolledStudentsUUID.remove(student.getId());
     }
 
+    public List<Teacher> getTeachers() {
+        return new ArrayList<>(this.teachers);
+    }
+
     public void addTeacher(Teacher newTeacher) throws IllegalArgumentException {
         if (newTeacher == null)
             throw new IllegalArgumentException("Class_TeacherList: An attempt was made to add an invalid item to the list of teachers.");
@@ -70,7 +78,7 @@ public class Class {
         this.teachers.add(newTeacher);
     }
 
-    public void removeStudent(Teacher teacher) throws IllegalArgumentException {
+    public void removeTeacher(Teacher teacher) throws IllegalArgumentException {
         if (teacher == null)
             throw new IllegalArgumentException("Class_TeacherList: An attempt was made to remove an invalid item to the list of teachers.");
         if (!this.teachers.contains(teacher))

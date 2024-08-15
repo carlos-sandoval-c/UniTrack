@@ -1,6 +1,6 @@
 package glo.csandoval.data;
 
-public class Teacher {
+public abstract class Teacher {
     private String name;
     private double baseSalary;
     private int experienceInYears;
@@ -49,6 +49,8 @@ public class Teacher {
     public void setExperienceInYears(int newExperienceInYears) {
         this.experienceInYears = newExperienceInYears;
     }
+
+    public abstract double getSalary();
 
     @Override
     public String toString() {

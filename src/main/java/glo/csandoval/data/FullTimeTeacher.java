@@ -6,7 +6,11 @@ public class FullTimeTeacher extends Teacher {
     }
 
     public double getSalary() {
-        // base salary (attribute) multiplied by 110% of its experience years.
-        return (super.getBaseSalary() * (super.getExperienceInYears() * 1.10));
+        return Math.round(super.getBaseSalary() * (super.getExperienceInYears() * 1.10));
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + (" | Calculated Salary:" + this.getSalary());
     }
 }

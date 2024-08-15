@@ -12,6 +12,9 @@ public class Main {
     }
 
     private static void showCourseDataByIndex(int index) {
+        if (index == -1)
+            return;
+
         Course selectedCourse = University.getAllCourses().get(index);
         if (selectedCourse == null)
             System.out.println("Invalid course!");
@@ -41,18 +44,18 @@ public class Main {
 
     private static int selectCourseByIndexMenu() {
         Main.showAllCourses();
-        System.out.println("Select which course you want to select:");
+        System.out.println("Select which course you want to select (0 to exit):");
 
         Integer courseVisualId = null; // Visual Id = List index + 1
         boolean isFirstAttempt = true;
-        while (courseVisualId == null || courseVisualId <= 0 || courseVisualId > University.getAllCourses().size()) {
+        while (courseVisualId == null || courseVisualId < 0 || courseVisualId > University.getAllCourses().size()) {
             if (!isFirstAttempt)
                 System.out.println("The selected id is invalid! Try again.");
 
             courseVisualId = SafeInput.getIntegerFromInput(System.in);
             isFirstAttempt = false;
         }
-        return (courseVisualId - 1); // Return List index
+        return (courseVisualId - 1); // Return List index or -1 if user selects exit
     }
 
     private static Course createClassMenu() {return null;}

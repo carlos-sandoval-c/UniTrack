@@ -1,7 +1,9 @@
 package glo.csandoval.data;
 
+import javax.naming.OperationNotSupportedException;
+
 public class Persistence {
-    public static void initializeData() {
+    public static void initializeData() throws OperationNotSupportedException {
         // String name, double baseSalary, int experienceInYears, int activeHoursPerWeek
         University.addTeacher(new PartTimeTeacher("Guillermo F. Simons", 3500.0, 0, 22));
         University.addTeacher(new PartTimeTeacher("Harrison D. Grant", 3820.0, 1, 25));

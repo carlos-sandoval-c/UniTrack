@@ -1,5 +1,6 @@
 package glo.csandoval.data;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.*;
 
 public class Course {
@@ -45,11 +46,11 @@ public class Course {
         return new ArrayList<>(this.students);
     }
 
-    public void addStudent(Student newStudent) throws IllegalArgumentException {
+    public void addStudent(Student newStudent) throws IllegalArgumentException, OperationNotSupportedException {
         if (newStudent == null)
             throw new IllegalArgumentException("Class_StudentList: An attempt was made to add an invalid item to the list of students.");
         if (this.enrolledStudentsUUID.contains(newStudent.getId()))
-            throw new IllegalArgumentException("Class_StudentList: An attempt was made to add an duplicated item to the list of students.");
+            throw new OperationNotSupportedException("Class_StudentList: An attempt was made to add an duplicated item to the list of students.");
 
         this.students.add(newStudent);
         this.enrolledStudentsUUID.add(newStudent.getId());
@@ -69,11 +70,11 @@ public class Course {
         return new ArrayList<>(this.teachers);
     }
 
-    public void addTeacher(Teacher newTeacher) throws IllegalArgumentException {
+    public void addTeacher(Teacher newTeacher) throws IllegalArgumentException, OperationNotSupportedException {
         if (newTeacher == null)
             throw new IllegalArgumentException("Class_TeacherList: An attempt was made to add an invalid item to the list of teachers.");
         if (this.teachers.contains(newTeacher))
-            throw new IllegalArgumentException("Class_TeacherList: An attempt was made to add an duplicated item to the list of teachers.");
+            throw new OperationNotSupportedException("Class_TeacherList: An attempt was made to add an duplicated item to the list of teachers.");
 
         this.teachers.add(newTeacher);
     }

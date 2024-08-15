@@ -1,5 +1,6 @@
 package glo.csandoval.data;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,12 +67,25 @@ public class University {
         University.students.add(newStudent);
     }
 
-    public static void removeStudent(Student studentToRemove) throws IllegalArgumentException {
+    public static void addStudent(String name, int age) throws IllegalArgumentException {
+        if (name == null || name.isEmpty() || age < 0)
+            throw new IllegalArgumentException("University: Add null student into the list");
+        University.students.add(new Student(name, age));
+    }
+
+    public static void removeStudent(Student studentToRemove) throws IllegalArgumentException, OperationNotSupportedException {
         if (studentToRemove == null || !University.students.contains(studentToRemove))
             throw new IllegalArgumentException("University: The indicated student is null or not exits");
 
         for (Course course : University.courses) {
             course.removeStudent(studentToRemove);
         }
+    }
+
+    public static void addStudentToCourse(Student student, Course course) throws IllegalArgumentException, OperationNotSupportedException {
+        if (!University.courses.contains(course) || !University.students.contains(student))
+            throw new IllegalArgumentException("University: Student or Course no exists");
+
+        course.addStudent(student);
     }
 }

@@ -88,6 +88,10 @@ public class Course {
         this.teachers.remove(teacher);
     }
 
+    public boolean studentBelongs(Student student) {
+        return student != null && this.enrolledStudentsUUID.contains(student.getId());
+    }
+
     @Override
     public String toString() {
         return ("Name: " + this.name

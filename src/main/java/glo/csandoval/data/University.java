@@ -106,4 +106,16 @@ public class University {
 
         course.addStudent(student);
     }
+
+    public static List<Course> getAllClassesOfStudent(Student student) throws IllegalArgumentException {
+        if (student == null || !University.getAllStudents().contains(student))
+            throw new IllegalArgumentException("University: Student no exists");
+
+        List<Course> studentCourses = new ArrayList<>();
+        for (Course course : University.courses) {
+            if (course.studentBelongs(student))
+                studentCourses.add(course);
+        }
+        return studentCourses;
+    }
 }

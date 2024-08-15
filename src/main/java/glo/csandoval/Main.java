@@ -54,9 +54,30 @@ public class Main {
         }
     }
 
-    private static void showAllClassesOfStudent(Student student) {}
+    private static void showAllClassesOfStudentByIndex(int index) {
+        Student student = University.getAllStudents().get(index);
+        int i = 1;
+        for (Course course: University.getAllClassesOfStudent(student)) {
+            System.out.println(i + ". " + course.toString());
+            i++;
+        }
+    }
 
-    private static Student selectStudentMenu() {return null;}
+    private static int selectStudentMenu() {
+        Main.showAllStudents();
+        System.out.println("Select which student you want to select (0 to exit):");
+
+        Integer studentVisualId = null; // Visual Id = List index + 1
+        boolean isFirstAttempt = true;
+        while (studentVisualId == null || studentVisualId < 0 || studentVisualId > University.getAllStudents().size()) {
+            if (!isFirstAttempt)
+                System.out.println("The selected id is invalid! Try again.");
+
+            studentVisualId = SafeInput.getIntegerFromInput(System.in);
+            isFirstAttempt = false;
+        }
+        return (studentVisualId - 1); // Return List index or -1 if user selects exit
+    }
 
     private static int selectCourseMenu() {
         Main.showAllCourses();
@@ -129,10 +150,10 @@ public class Main {
     private static void addStudentToCourseMenu(Student student) {
         System.out.println("To which class do you want to add the student you just created?");
         int courseIndex = Main.selectCourseMenu();
-        if (courseIndex == 0)
+        if (courseIndex == -1)
             return;
         try {
-            University.addStudentToCourse(student, University.getAllCourses().get(courseIndex - 1));
+            University.addStudentToCourse(student, University.getAllCourses().get(courseIndex));
         } catch (OperationNotSupportedException e) {
             System.out.println("The student already belongs to this class!");
         } catch (IllegalArgumentException e) {
@@ -230,8 +251,8 @@ public class Main {
                 Main.addTeacherToCourseMenu(newCourse);
                 break;
             case 5:
-                Student student = Main.selectStudentMenu();
-                Main.showAllClassesOfStudent(student);
+                int studentIndex = Main.selectStudentMenu();
+                Main.showAllClassesOfStudentByIndex(studentIndex);
                 break;
             case 6:
                 System.out.println("Goodbye, thank you for use our software!");

@@ -3,9 +3,17 @@ package glo.csandoval;
 import glo.csandoval.data.*;
 import glo.csandoval.ui.utilities.SafeInput;
 
+import javax.naming.OperationNotSupportedException;
+
 public class Main {
     public static void main(String[] args) {
-        Persistence.initializeData();
+        try {
+            Persistence.initializeData();
+        } catch (OperationNotSupportedException e) {
+            System.out.println("Critical error when loading initialization data!");
+            System.exit(-1);
+        }
+
         Main.initialMenu();
         while (Main.mainMenu() >= 0)
             ; // Run main menu while the user does not exit the program (mainMenu returns -1 in exit option)
@@ -59,9 +67,62 @@ public class Main {
     }
 
     private static Course createClassMenu() {return null;}
-    private static Student createStudentMenu() {return null;}
 
-    private static void addStudentToCourseMenu(Student student) {}
+    private static Student createStudent() {
+        String studentName = "";
+        boolean isFirstAttempt = true;
+        while (studentName == null || studentName.isEmpty()) {
+            if (!isFirstAttempt)
+                System.out.println("The name cannot be empty! Try again.");
+
+            System.out.println("Please enter the new student name:");
+            studentName = SafeInput.getStringFromSource(System.in);
+            isFirstAttempt = false;
+        }
+
+        Integer studentAge = -1;
+        isFirstAttempt = true;
+        while (studentAge == null || studentAge < 0) {
+            if (!isFirstAttempt)
+                System.out.println("The enter age is invalid! Try again.");
+
+            System.out.println("Please enter the age of the student:");
+            studentAge = SafeInput.getIntegerFromInput(System.in);
+            isFirstAttempt = false;
+        }
+
+        University.addStudent(studentName, studentAge);
+        return University.getAllStudents().get(University.getAllStudents().size() - 1);
+    }
+
+    private static void addStudentToCourseMenu(Student student) {
+        System.out.println("To which class do you want to add the student you just created?");
+        Main.showAllCourses();
+        System.out.println("Select which course you want to add student (0 to exit):");
+
+        Integer courseVisualId = null; // Visual Id = List index + 1
+        boolean isFirstAttempt = true, repeatMenu = true;
+        while (courseVisualId == null || courseVisualId < 0 || courseVisualId > University.getAllCourses().size()) {
+            if (!isFirstAttempt)
+                System.out.println("The selected id is invalid! Try again.");
+
+            courseVisualId = SafeInput.getIntegerFromInput(System.in);
+            isFirstAttempt = false;
+        }
+
+        if (courseVisualId == 0)
+            return;
+        try {
+            University.addStudentToCourse(student, University.getAllCourses().get(courseVisualId - 1));
+        } catch (OperationNotSupportedException e) {
+            System.out.println("The student already belongs to this class!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("The registered parameters are invalid!");
+            return;
+        }
+        Main.addStudentToCourseMenu(student); // Recursion (I know it's not the best in terms of performance, but I want to keep it simple.)
+    }
+
     private static void addStudentToCourseMenu(Course course) {}
     private static void addTeacherToCourseMenu(Course course) {}
 
@@ -88,7 +149,7 @@ public class Main {
                 Main.showCourseDataByIndex(index);
                 break;
             case 3:
-                Student newStudent = Main.createStudentMenu();
+                Student newStudent = Main.createStudent();
                 Main.addStudentToCourseMenu(newStudent);
                 break;
             case 4:

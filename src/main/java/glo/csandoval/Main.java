@@ -58,7 +58,7 @@ public class Main {
 
     private static Student selectStudentMenu() {return null;}
 
-    private static int selectCourseByIndexMenu() {
+    private static int selectCourseMenu() {
         Main.showAllCourses();
         System.out.println("Select which course you want to select (0 to exit):");
 
@@ -128,23 +128,11 @@ public class Main {
 
     private static void addStudentToCourseMenu(Student student) {
         System.out.println("To which class do you want to add the student you just created?");
-        Main.showAllCourses();
-        System.out.println("Select which course you want to add student (0 to exit):");
-
-        Integer courseVisualId = null; // Visual Id = List index + 1
-        boolean isFirstAttempt = true;
-        while (courseVisualId == null || courseVisualId < 0 || courseVisualId > University.getAllCourses().size()) {
-            if (!isFirstAttempt)
-                System.out.println("The selected id is invalid! Try again.");
-
-            courseVisualId = SafeInput.getIntegerFromInput(System.in);
-            isFirstAttempt = false;
-        }
-
-        if (courseVisualId == 0)
+        int courseIndex = Main.selectCourseMenu();
+        if (courseIndex == 0)
             return;
         try {
-            University.addStudentToCourse(student, University.getAllCourses().get(courseVisualId - 1));
+            University.addStudentToCourse(student, University.getAllCourses().get(courseIndex - 1));
         } catch (OperationNotSupportedException e) {
             System.out.println("The student already belongs to this class!");
         } catch (IllegalArgumentException e) {
@@ -229,7 +217,7 @@ public class Main {
                 Main.showAllTeachers();
                 break;
             case 2:
-                int index = Main.selectCourseByIndexMenu();
+                int index = Main.selectCourseMenu();
                 Main.showCourseDataByIndex(index);
                 break;
             case 3:

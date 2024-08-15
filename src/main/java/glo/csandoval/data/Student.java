@@ -39,4 +39,11 @@ public class Student {
             throw new IllegalArgumentException("Student_Age: Invalid age");
         this.age = newAge;
     }
+
+    @Override
+    public String toString() {
+        return ("Id: " + this.id
+                + " | Name:" + this.name
+                + " | Age: " + this.age);
+    }
 }

@@ -49,4 +49,12 @@ public class Teacher {
     public void setExperienceInYears(int newExperienceInYears) {
         this.experienceInYears = newExperienceInYears;
     }
+
+    @Override
+    public String toString() {
+        return ("Name: " + this.name
+                + " | Base Salary:" + this.baseSalary
+                + " | Years of Experience: " + this.experienceInYears
+                + " | Active hours per week: " + this.activeHoursPerWeek);
+    }
 }

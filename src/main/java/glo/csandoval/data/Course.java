@@ -86,4 +86,27 @@ public class Course {
 
         this.teachers.remove(teacher);
     }
+
+    @Override
+    public String toString() {
+        return ("Name: " + this.name
+                + " | Classroom: " + this.classroom);
+    }
+
+    public String getDetailedCourseData() {
+        StringBuilder str = new StringBuilder();
+        str.append(this.toString());
+
+        str.append("\nStudents: ");
+        for (Student student : this.students) {
+            str.append("\n\t").append("* ").append(student.toString());
+        }
+
+        str.append("\nTeachers: ");
+        for (Teacher teacher : this.teachers) {
+            str.append("\n\t").append("* ").append(teacher.toString());
+        }
+
+        return str.toString();
+    }
 }

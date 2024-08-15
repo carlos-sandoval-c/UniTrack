@@ -30,6 +30,14 @@ public class Main {
             System.out.println(selectedCourse.getDetailedCourseData());
     }
 
+    private static void showAllStudents() {
+        int i = 1;
+        for (Student student: University.getAllStudents()) {
+            System.out.println(i + ". " + student.toString());
+            i++;
+        }
+    }
+
     private static void showAllTeachers() {
         int i = 1;
         for (Teacher teacher: University.getAllTeachers()) {
@@ -66,7 +74,31 @@ public class Main {
         return (courseVisualId - 1); // Return List index or -1 if user selects exit
     }
 
-    private static Course createClassMenu() {return null;}
+    private static Course createClassMenu() {
+        String courseName = "";
+        boolean isFirstAttempt = true;
+        while (courseName == null || courseName.isEmpty()) {
+            if (!isFirstAttempt)
+                System.out.println("The name cannot be empty! Try again.");
+
+            System.out.println("Please enter the new course name:");
+            courseName = SafeInput.getStringFromSource(System.in);
+            isFirstAttempt = false;
+        }
+
+        String courseClassroom = "";
+        isFirstAttempt = true;
+        while (courseClassroom == null || courseClassroom.isEmpty()) {
+            if (!isFirstAttempt)
+                System.out.println("The name cannot be empty! Try again.");
+
+            System.out.println("Please enter the new course name:");
+            courseClassroom = SafeInput.getStringFromSource(System.in);
+            isFirstAttempt = false;
+        }
+
+        return University.addCourse(courseName, courseClassroom);
+    }
 
     private static Student createStudent() {
         String studentName = "";
@@ -91,8 +123,7 @@ public class Main {
             isFirstAttempt = false;
         }
 
-        University.addStudent(studentName, studentAge);
-        return University.getAllStudents().get(University.getAllStudents().size() - 1);
+        return University.addStudent(studentName, studentAge);
     }
 
     private static void addStudentToCourseMenu(Student student) {
@@ -101,7 +132,7 @@ public class Main {
         System.out.println("Select which course you want to add student (0 to exit):");
 
         Integer courseVisualId = null; // Visual Id = List index + 1
-        boolean isFirstAttempt = true, repeatMenu = true;
+        boolean isFirstAttempt = true;
         while (courseVisualId == null || courseVisualId < 0 || courseVisualId > University.getAllCourses().size()) {
             if (!isFirstAttempt)
                 System.out.println("The selected id is invalid! Try again.");
@@ -123,8 +154,61 @@ public class Main {
         Main.addStudentToCourseMenu(student); // Recursion (I know it's not the best in terms of performance, but I want to keep it simple.)
     }
 
-    private static void addStudentToCourseMenu(Course course) {}
-    private static void addTeacherToCourseMenu(Course course) {}
+    private static void addStudentToCourseMenu(Course course) {
+        System.out.println("Which students would you like to add to the class?");
+        Main.showAllStudents();
+        System.out.println("Select the student (0 to exit):");
+
+        Integer studentVisualId = null; // Visual Id = List index + 1
+        boolean isFirstAttempt = true, repeatMenu = true;
+        while (studentVisualId == null || studentVisualId < 0 || studentVisualId > University.getAllStudents().size()) {
+            if (!isFirstAttempt)
+                System.out.println("The selected id is invalid! Try again.");
+
+            studentVisualId = SafeInput.getIntegerFromInput(System.in);
+            isFirstAttempt = false;
+        }
+
+        if (studentVisualId == 0)
+            return;
+        try {
+            University.addStudentToCourse(University.getAllStudents().get(studentVisualId - 1), course);
+        } catch (OperationNotSupportedException e) {
+            System.out.println("The student already belongs to this class!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("The registered parameters are invalid!");
+            return;
+        }
+        Main.addStudentToCourseMenu(course); // Recursion (I know it's not the best in terms of performance, but I want to keep it simple.)
+    }
+
+    private static void addTeacherToCourseMenu(Course course) {
+        System.out.println("Which teacher would you like to add to the class?");
+        Main.showAllTeachers();
+        System.out.println("Select the teacher (0 to exit):");
+
+        Integer teacherVisualId = null; // Visual Id = List index + 1
+        boolean isFirstAttempt = true, repeatMenu = true;
+        while (teacherVisualId == null || teacherVisualId < 0 || teacherVisualId > University.getAllTeachers().size()) {
+            if (!isFirstAttempt)
+                System.out.println("The selected id is invalid! Try again.");
+
+            teacherVisualId = SafeInput.getIntegerFromInput(System.in);
+            isFirstAttempt = false;
+        }
+
+        if (teacherVisualId == 0)
+            return;
+        try {
+            University.addTeacherToCourse(University.getAllTeachers().get(teacherVisualId - 1), course);
+        } catch (OperationNotSupportedException e) {
+            System.out.println("The student already belongs to this class!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("The registered parameters are invalid!");
+            return;
+        }
+        Main.addTeacherToCourseMenu(course); // Recursion (I know it's not the best in terms of performance, but I want to keep it simple.)
+    }
 
     private static int mainMenu() {
         System.out.println("\n1. Show all teachers\n" +
